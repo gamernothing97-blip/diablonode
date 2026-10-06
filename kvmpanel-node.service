@@ -1,0 +1,19 @@
+[Unit]
+Description=Diablo KVM panel node agent
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/kvmpanel-node
+ExecStart=/usr/bin/node src/agent.js
+Restart=always
+RestartSec=3
+# Running VMs are daemonized QEMU processes, so keep them alive when the agent restarts.
+KillMode=process
+# QEMU and tap/bridge setup need root.
+User=root
+EnvironmentFile=-/opt/kvmpanel-node/.env
+
+[Install]
+WantedBy=multi-user.target
